@@ -1,0 +1,109 @@
+\documentclass[a4paper,landscape]{article}
+
+\usepackage[margin=6mm,top=15mm]{geometry}
+\usepackage{anttor}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows}
+\usetikzlibrary{scopes}
+\usepackage{pifont}
+\usepackage{fourier-orns}
+\usepackage{ifthen}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\pgfmathsetmacro{\cardwidth}{5.5}
+\pgfmathsetmacro{\cardheight}{8.5}
+\pgfmathsetmacro{\imagewidth}{\cardwidth}
+\pgfmathsetmacro{\imageheight}{0.75*\cardheight}
+\pgfmathsetmacro{\stripwidth}{0.5}
+\pgfmathsetmacro{\halfstripwidth}{0.25}
+\pgfmathsetmacro{\strippadding}{0.1}
+\pgfmathsetmacro{\textpadding}{0.1}
+\pgfmathsetmacro{\titley}{\cardheight-\stripwidth-\textpadding}
+
+%define card shape and margin and area
+\def\shapeStrip#1{(\cardwidth-\stripwidth*#1-\strippadding*#1-\strippadding,\cardheight-\stripwidth) rectangle (\cardwidth-#1*\stripwidth-\strippadding*#1-\strippadding-\stripwidth,\cardheight+0.2)}
+\def\shapeStripDW#1{(\cardwidth-\stripwidth*#1-\strippadding*#1-\strippadding,\cardheight-\stripwidth) rectangle (\cardwidth-#1*\stripwidth-\stripwidth-\strippadding*#1-2*\strippadding-\stripwidth,\cardheight+0.2)}
+\def\incimg#1{\includegraphics[width=\stripwidth cm]{img/#1}}
+\def\incicon#1{\includegraphics[width=\halfstripwidth cm]{img/#1}}
+
+\def\topTag#1#2{\fill[toptag] \shapeStrip{#1};
+\node at (\cardwidth-\stripwidth*0.5-\stripwidth*#1-\strippadding*#1-\strippadding,\cardheight-\stripwidth*0.5) {#2};
+}
+\def\topTagColored#1#2#3{\fill[toptag,fill=tag_type_#2] \shapeStrip{#1};
+\node at (\cardwidth-\stripwidth*0.5-\stripwidth*#1-\strippadding*#1-\strippadding,\cardheight-\stripwidth*0.5) {#3};
+}
+\def\topTagDW#1#2{\fill[toptag] \shapeStripDW{#1};
+\node at (\cardwidth-\stripwidth-\stripwidth*#1-\strippadding*#1-1.5*\strippadding,\cardheight-\stripwidth*0.5) {#2};
+}
+
+\definecolor{rulered}{HTML}{9C2B1B}
+\definecolor{tag_color}{RGB}{225,225,225}
+\definecolor{tag_type}{RGB}{102,204,255}
+\definecolor{tag_type_Illusion}{RGB}{153, 102, 51}
+\definecolor{tag_type_Bannmagie}{RGB}{204,0,255}
+\definecolor{tag_type_Beschwörung}{RGB}{255,0,0}
+\definecolor{tag_type_Erkenntnismagie}{RGB}{255,255,255}
+\definecolor{tag_type_Hervorrufung}{RGB}{255,255,0}
+\definecolor{tag_type_Nekromantie}{RGB}{0,0,0}
+\definecolor{tag_type_Verwandlung}{RGB}{102,204,255}
+\definecolor{tag_type_Verzauberung}{RGB}{255,204,0}
+
+% define style for tikz lib
+\tikzset{
+    %   Round corners for the cards
+    cardcorners/.style={
+        rounded corners=0.0cm
+    },
+    toptag/.style={
+        rounded corners=0.1cm,
+        fill=tag_color,
+        opacity=0.5,
+        draw=black
+    },
+    %   Image for the default background
+    cardbackground/.style={
+        path picture={
+                \node at (0.5*\cardwidth,0.5*\cardheight) {
+                    \incimg{bg.jpg}
+            };
+        }
+    },
+}
+
+\usepackage{bookman}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\rmdefault}{lmss}
+
+\makeatletter
+\newcommand\notsotiny{\@setfontsize\notsotiny{6}{7}}
+\makeatother
+
+\begin{document}
+\newsavebox{\cardback}
+\savebox{\cardback}[55mm]{
+\begin{tikzpicture}[every node/.style={inner sep=0, outer sep=0}]
+	\clip (0,0) rectangle (\pagewidth,\pageheight);
+	\begin{scope}[rotate=45]
+		\foreach \x in {-11,...,16}
+		{
+			\foreach \y in {-11,...,15}
+			{
+				\node[transform shape] at (\x*3.25, \y*1.75) {\includegraphics[width=3cm]{img/back.eps}};
+			}
+		}
+	\end{scope}
+
+\end{tikzpicture}
+}
+\begin{center}
+    \pagestyle{empty}
+    \VAR{content}
+
+\end{center}
+\end{document}

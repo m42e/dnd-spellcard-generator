@@ -1,0 +1,69 @@
+	\clip (0,0) rectangle (\cardwidth,\cardheight);
+	\draw[lightgray!10,cardcorners] (0,0) rectangle (\cardwidth,\cardheight);
+
+			\topTag{0}{\incimg{verbal\BLOCK{ if 'V' not in tags['components'] }_inactive\BLOCK{ endif}.eps}}
+			\topTag{1}{\incimg{hand\BLOCK{ if 'G' not in tags['components'] }_inactive\BLOCK{ endif}.eps}}
+			\topTag{2}{\incimg{bag\BLOCK{ if 'M' not in tags['components'] }_inactive\BLOCK{ endif}.eps}}
+			\topTag{3}{\incimg{ritual\BLOCK{ if not info['ritual'] }_inactive\BLOCK{ endif}.eps}}
+			\topTag{4}{\incimg{brain\BLOCK{ if not tags['duration']['concentration'] }_inactive\BLOCK{ endif}.eps}}
+			\topTag{5}{\VAR{level}}
+			\topTagDW{6}{\small$\vcenter{\hbox{\incimg{Bookpage.eps}}}$\VAR{page}}
+			\topTagColored{8}{\VAR{info['type']}}{\incimg{wand.eps}}
+
+			\node[below right, align=center, text width=5cm,inner sep=0, outer sep=0,minimum height=6mm] (title) at (\halfstripwidth,\titley) {\color{black}\large\scshape \VAR{title}};
+
+
+			\node[below right=0.2 cm and 0 cm of title.south west] (hourglas) {\incicon{hourglas.eps}};
+			\node[below left=0.2 cm and 0 cm of title.south east] (clock) {\incicon{clock.eps}};
+			\node[below right=0.05 cm and 0 cm of hourglas.south west] (target) {\incicon{target.eps}};
+			\node[below right=0.05 cm and 0 cm of clock.south west] (book) {\incicon{book.eps}};
+
+			\node[right=0.05 cm of hourglas, text width=2.15cm] {\scriptsize \VAR{tags['preparation']['desc']}};
+			\node[left=0.05 cm of clock, text width=2.15cm, align=right] {\scriptsize
+				\BLOCK{ if tags['duration']['concentration'] }
+                    {\tiny$\leq$}\VAR{tags['duration']['value']} \VAR{tags['duration']['unit']}
+				\BLOCK{else}
+					\VAR{tags['duration']['desc']}
+				\BLOCK{endif}
+			};
+
+			\node[right=0.05 cm of target, text width=2.85cm] (range) {\scriptsize
+				\BLOCK{ if tags['range'] is number }
+					\VAR{tags['range']} m
+				\BLOCK{elif 'rangetype' in tags}
+					\VAR{tags['range']} (\VAR{tags['rangetype']}, \VAR{tags['rangewidth']} m)
+				\BLOCK{else}
+					\VAR{tags['range']}
+				\BLOCK{endif}};
+			\node[left=0.05 cm of book, text width=2.15cm, align=right] (range) {\scriptsize \VAR{info['type']}};
+
+
+			\node[above right,inner sep=0,outer sep=0, align=justify,text width=5cm] (needs) at (0.25cm,0.25cm) {\tiny\setlength{\baselineskip}{0pt}\VAR{tags['materials']}\par};
+
+
+			\draw [rulered, fill=rulered] (title.south west)+(0,-0.05) -- +(0,-0.15) -- ++(5, -0.1);
+			\draw [rulered, fill=rulered] (target.south west)+(0,-0.15) -- +(0,-0.05) -- ++(5, -0.10);
+			\draw [rulered, fill=rulered] (needs.north west)+(0,0.1) -- +(0,0.2) -- ++(5, 0.15);
+			\begin{scope}
+				\clip[below right](needs.north west)+(0,0.2) rectangle (book.south east);
+				%\draw[below right](needs.north west)+(0,0.2) rectangle (book.south east);
+				\node[align=justify,below right=0.2 cm and 0 cm of target.south west, text width=(\cardwidth-5.5*\strippadding)*1cm] (text) {
+					{\scriptsize 
+					\setlength{\parindent}{1em}
+                    \BLOCK{ if text_card is defined }
+					\VAR{text_card}\par
+                    \BLOCK{ else }
+					\VAR{text}\par
+                    \BLOCK{ endif }
+					}
+				};
+                \BLOCK{ if higher_levels is defined }
+				\node[align=justify,above right=0.25 cm and 0 cm of needs.north west, text width=(\cardwidth-5.5*\strippadding)*1cm] (text) {
+                    \tiny
+					\VAR{higher_levels}\par
+                    };
+                \BLOCK{ endif }
+                \BLOCK{ if text_card is defined }
+                    \node[above left=0.15 cm and 0 cm of needs.north east,fill=white] {*};
+                \BLOCK{ endif }
+			\end{scope}
