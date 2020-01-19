@@ -7,7 +7,7 @@
 			\topTag{3}{\incimg{ritual\BLOCK{ if not info['ritual'] }_inactive\BLOCK{ endif}.eps}}
 			\topTag{4}{\incimg{brain\BLOCK{ if not tags['duration']['concentration'] }_inactive\BLOCK{ endif}.eps}}
 			\topTag{5}{\VAR{level}}
-			\topTagDW{6}{\footnotesize$\vcenter{\hbox{\incimg{Bookpage.eps}}}$\VAR{page}}
+			\topTagDW{6}{\footnotesize$\vcenter{\hbox{\incimg{bookpage\BLOCK{ if 'sourceid' in tags }_\VAR{tags['sourceid']}\BLOCK{ endif}.eps}}}$\VAR{page}}
 			\topTagColored{8}{\VAR{info['type']}}{\incimg{wand.eps}}
 
 			\node[below right, align=center, text width=5cm,inner sep=0, outer sep=0,minimum height=6mm] (title) at (\halfstripwidth,\titley) {\color{black}\large\scshape \VAR{title}};
@@ -28,12 +28,10 @@
 			};
 
 			\node[right=0.05 cm of target, text width=2.85cm] (range) {\scriptsize
-				\BLOCK{ if tags['range'] is number }
-					\VAR{tags['range']} m
-				\BLOCK{elif 'rangetype' in tags}
-					\VAR{tags['range']} (\VAR{tags['rangetype']}, \VAR{tags['rangewidth']} m)
+				\BLOCK{if 'type' in tags['range']}
+					\VAR{tags['range']['desc']} (\VAR{tags['range']['type']}, \VAR{tags['range']['width']})
 				\BLOCK{else}
-					\VAR{tags['range']}
+					\VAR{tags['range']['desc']}
 				\BLOCK{endif}};
 			\node[left=0.05 cm of book, text width=2.15cm, align=right] (range) {\scriptsize \VAR{info['type']}};
 

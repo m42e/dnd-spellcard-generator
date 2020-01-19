@@ -12,7 +12,7 @@
         "unit": "minute",
         "desc": "1 minute"
       },
-      "range": 30,
+      "range": "30 ft.",
       "components": [
         "V",
         "G",
