@@ -13,5 +13,5 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /home/appuser
 USER appuser
 
-COPY ./
+COPY ./ ./
 ENTRYPOINT ["python", "./genspells.py"]
