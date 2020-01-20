@@ -23,7 +23,9 @@ def get_template(name):
         line_comment_prefix="%#",
         trim_blocks=True,
         autoescape=False,
-        loader=jinja2.FileSystemLoader(os.path.abspath("templates/")),
+        loader=jinja2.FileSystemLoader(
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "templates/"))
+        ),
     )
     template = latex_jinja_env.get_template(f"{name}.tex.jinja")
     return template
