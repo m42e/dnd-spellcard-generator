@@ -23,7 +23,9 @@ def get_template(name):
         line_comment_prefix="%#",
         trim_blocks=True,
         autoescape=False,
-        loader=jinja2.FileSystemLoader(os.path.abspath("templates/")),
+        loader=jinja2.FileSystemLoader(
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "templates/"))
+        ),
     )
     template = latex_jinja_env.get_template(f"{name}.tex.jinja")
     return template
@@ -59,9 +61,11 @@ def main():
             spells.update(json.load(jf))
 
     if args.characterclass != "All":
-        spells = dict(filter(lambda x: args.characterclass in x[1]["classes"], spells.items()))
+        spells = dict(
+            filter(lambda x: args.characterclass in x[1]["classes"], spells.items())
+        )
 
-    spells = dict(sorted(spells.items(), key=spell_sorter(args.sort.split(','))))
+    spells = dict(sorted(spells.items(), key=spell_sorter(args.sort.split(","))))
     pages = generate_pages(spells, args.twosided)
     filename = args.output if args.output is not None else args.characterclass
     write_doc(filename, pages)
@@ -75,8 +79,8 @@ def write_doc(filename, pages):
 def generate_pages(spells, twosided=False):
     spellpages = []
     back = get_template("spellcard_back").render()
-    for i in range(0, len(spells)+9, 10):
-        spellpages.append(generate_page(list(spells.items())[i:i+10]))
+    for i in range(0, len(spells) + 9, 10):
+        spellpages.append(generate_page(list(spells.items())[i : i + 10]))
         if twosided:
             spellpages.append(back)
     if not twosided:
@@ -108,6 +112,7 @@ def latex_format(text):
     )
     text = re.sub(r"([0-9]+)\sm", r"\1~m", text)
     return text
+
 
 if __name__ == "__main__":
     main()

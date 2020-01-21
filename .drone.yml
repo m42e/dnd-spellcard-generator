@@ -1,0 +1,41 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: docker  
+    image: plugins/docker
+    settings:
+      registry: registry.d1v3.de
+      repo: registry.d1v3.de/dnd-spellcard-builder
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      auto_tag: true
+  - name: dockerroot
+    image: plugins/docker
+    settings:
+      registry: registry.d1v3.de
+      repo: registry.d1v3.de/dnd-spellcard-builder-root
+      dockerfile: Dockerfile.root
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      auto_tag: true
+---
+kind: secret
+name: docker_username
+get:
+    path: kv/data/drone/docker
+    name: username
+---
+
+kind: secret
+name: docker_password
+get:
+    path: kv/data/drone/docker
+    name: token
+
