@@ -106,11 +106,12 @@ def generate_spell(spellname, spell):
 
 
 def latex_format(text):
-    text = re.sub(r"\*(?! )(([^*])*?)(?! )\*", "\\\\textbf{\\1}", text)
+    text = re.sub(r"\*(?! )(([^*])*?)(?! )\*", r"\\textbf{\1}", text)
     text = re.sub(
         r"(\s|\()([0-9]*W(?:4|6|8|10|12|20)(?:\s*\+[0-9]+)?)", r"\1\\textbf{\2}", text
     )
     text = re.sub(r"([0-9]+)\sm", r"\1~m", text)
+    text = re.sub(r"&", r"\&", text)
     return text
 
 
